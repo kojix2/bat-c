@@ -17,19 +17,9 @@ cargo build --release
 # target/release/libbat_c.so (Linux), libbat_c.dylib (macOS), bat_c.dll (Windows)
 ```
 
-## API
-
-Refer to the [bat documentation](https://docs.rs/bat).
-
-### Example Usage in C
+### C API
 
 ```c
-#include <stdarg.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <stdlib.h>
-
 /**
  * BatInputType enum to specify the type of input
  */
@@ -68,6 +58,65 @@ void bat_print_pretty(const char *input,
                       const char *theme,
                       struct BatPrintOptions options);
 
+```
+
+Example:
+
+```c
+#include <stdio.h>
+#include <string.h>
+#include "../bat.h"
+
+int main()
+{
+    const char *text = "<span style=\"color: #ff00cc\">Hello world!</span>\n";
+    const char *language = "html";
+    BatPrintOptions options = {
+        .tab_width = 4,
+        .colored_output = 1,
+        .true_color = 1,
+        .header = 1,
+        .line_numbers = 1,
+        .grid = 1,
+        .rule = 1,
+        .show_nonprintable = 0,
+        .snip = 1,
+        .wrapping_mode = 1,
+        .use_italics = 1,
+        .paging_mode = 1,
+        .highlight_line = 0};
+
+    // Test with bytes input
+    bat_print_pretty(
+        text,
+        strlen(text),
+        BatBytes,
+        language,
+        NULL,
+        options);
+
+    // Test with file input
+    const char *file_path = "test_input.html";
+    bat_print_pretty(
+        file_path,
+        0,
+        BatFile,
+        language,
+        NULL,
+        options);
+
+    // Test with multiple files input
+    const char *file_paths[] = {"test_input1.html", "test_input2.html"};
+    bat_print_pretty(
+        (const char *)file_paths,
+        2,
+        BatFiles,
+        language,
+        NULL,
+        options);
+
+    return 0;
+}
 ```
 
 ## Development
