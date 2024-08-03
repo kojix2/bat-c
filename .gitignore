@@ -1,2 +1,3 @@
 /target
 *.lock
+/test/test_print_pretty

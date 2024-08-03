@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# Add missing import
+export LD_LIBRARY_PATH="../target/release"
+
+# Compile the C test file
+gcc test_print_pretty.c -L ../target/release -lbat_c -o test_print_pretty
+
+# Initialize test result
+ALL_TESTS_PASSED=true
+
+# Run the test and capture the output
+OUTPUT=$(./test_print_pretty)
+EXPECTED_OUTPUT="[38;5;231m<[0m[38;5;203mspan[0m[38;5;149m [0m[38;5;149mstyle[0m[38;5;149m=[0m[38;5;231m\"[0m[38;5;81mcolor[0m[38;5;231m:[0m[38;5;149m [0m[38;5;141m#[0m[38;5;141mff00cc[0m[38;5;231m\"[0m[38;5;231m>[0m[38;5;231mHello world![0m[38;5;231m</[0m[38;5;203mspan[0m[38;5;231m>[0m"
+
+echo "Testing print_pretty function"
+echo "Expected: $EXPECTED_OUTPUT"
+echo "     Got: $OUTPUT"
+
+if [ "$OUTPUT" = "$EXPECTED_OUTPUT" ]; then
+  echo "Test passed successfully for print_pretty"
+else
+  echo "Test failed for print_pretty :("
+  ALL_TESTS_PASSED=false
+fi
+
+# Final test result
+if [ "$ALL_TESTS_PASSED" = true ]; then
+  echo "All tests passed successfully"
+  exit 0
+else
+  echo "Some tests failed :("
+  exit 1
+fi
