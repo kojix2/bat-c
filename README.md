@@ -24,54 +24,50 @@ Refer to the [bat documentation](https://docs.rs/bat).
 ### Example Usage in C
 
 ```c
-void print_pretty(const uint8_t *input,
-                  size_t length,
-                  const char *language,
-                  size_t tab_width,
-                  bool colored_output,
-                  bool true_color,
-                  bool header,
-                  bool line_numbers,
-                  bool grid,
-                  bool rule,
-                  bool show_nonprintable,
-                  bool snip,
-                  size_t wrapping_mode,
-                  bool use_italics,
-                  size_t paging_mode,
-                  const char *theme,
-                  size_t highlight_line);
-```
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-```c
-# include "bat.h"
+/**
+ * BatInputType enum to specify the type of input
+ */
+typedef enum BatInputType {
+  BatBytes,
+  BatFile,
+  BatFiles,
+} BatInputType;
 
-int main() {
-    const char* text = "<span style=\"color: #ff00cc\">Hello world!</span>\n";
-    const char* language = "html";
-    const char* theme = "TwoDark";
+/**
+ * Struct to hold print options
+ */
+typedef struct BatPrintOptions {
+  size_t tab_width;
+  bool colored_output;
+  bool true_color;
+  bool header;
+  bool line_numbers;
+  bool grid;
+  bool rule;
+  bool show_nonprintable;
+  bool snip;
+  size_t wrapping_mode;
+  bool use_italics;
+  size_t paging_mode;
+  size_t highlight_line;
+} BatPrintOptions;
 
-    print_pretty(
-        (const unsigned char*)text,
-        strlen(text),
-        language,
-        4,
-        1,  // Enable colored_output
-        1,  // Enable true_color
-        1,  // Enable header
-        1,  // Enable line_numbers
-        1,  // Enable grid
-        1,  // Enable rule
-        1,  // Enable show_nonprintable
-        1,  // Enable snip
-        1,  // Set wrapping_mode to Character
-        1,  // Enable use_italics
-        1,  // Set paging_mode to Always
-        theme,
-        0   // Highlight the first line
-    );
-    return 0;
-}
+/**
+ * Unified function to pretty print with specified options.
+ */
+void bat_print_pretty(const char *input,
+                      size_t length,
+                      enum BatInputType input_type,
+                      const char *language,
+                      const char *theme,
+                      struct BatPrintOptions options);
+
 ```
 
 ## Development

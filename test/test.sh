@@ -1,10 +1,10 @@
 #!/bin/sh
 
 # Add missing import
-export LD_LIBRARY_PATH="../target/release"
+export LD_LIBRARY_PATH="../target/release:../target/debug"
 
 # Compile the C test file
-gcc test_print_pretty.c -L ../target/release -lbat_c -o test_print_pretty
+gcc test_print_pretty.c -L ../target/release -L ../target/debug -lbat_c -o test_print_pretty
 
 # Initialize test result
 ALL_TESTS_PASSED=true

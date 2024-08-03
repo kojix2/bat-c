@@ -9,24 +9,41 @@
 #include <stdlib.h>
 
 /**
- * Pretty print the input string with specified options.
+ * BatInputType enum to specify the type of input
+ */
+typedef enum BatInputType {
+  BatBytes,
+  BatFile,
+  BatFiles,
+} BatInputType;
+
+/**
+ * Struct to hold print options
+ */
+typedef struct BatPrintOptions {
+  size_t tab_width;
+  bool colored_output;
+  bool true_color;
+  bool header;
+  bool line_numbers;
+  bool grid;
+  bool rule;
+  bool show_nonprintable;
+  bool snip;
+  size_t wrapping_mode;
+  bool use_italics;
+  size_t paging_mode;
+  size_t highlight_line;
+} BatPrintOptions;
+
+/**
+ * Unified function to pretty print with specified options.
  * # Safety
  * This function is marked as unsafe because it dereferences raw pointers.
  */
-void print_pretty(const uint8_t *input,
-                  size_t length,
-                  const char *language,
-                  size_t tab_width,
-                  bool colored_output,
-                  bool true_color,
-                  bool header,
-                  bool line_numbers,
-                  bool grid,
-                  bool rule,
-                  bool show_nonprintable,
-                  bool snip,
-                  size_t wrapping_mode,
-                  bool use_italics,
-                  size_t paging_mode,
-                  const char *theme,
-                  size_t highlight_line);
+void bat_print_pretty(const char *input,
+                      size_t length,
+                      enum BatInputType input_type,
+                      const char *language,
+                      const char *theme,
+                      struct BatPrintOptions options);
