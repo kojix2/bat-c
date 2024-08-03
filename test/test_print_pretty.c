@@ -5,27 +5,26 @@
 int main() {
     const char* text = "<span style=\"color: #ff00cc\">Hello world!</span>\n";
     const char* language = "html";
+    const char* theme = "TwoDark";
 
-    // Call the print_pretty function
     print_pretty(
         (const unsigned char*)text,
         strlen(text),
         language,
-        4,
+        4,  // Set tab_width to 4
         1,  // Enable colored_output
-        0,  // Disable true_color
-        0,  // Disable header
-        0,  // Disable line_numbers
-        0,  // Disable grid
-        0,  // Disable rule
-        0,  // Disable show_nonprintable
-        0,  // Disable snip
-        0,  // Set wrapping_mode to NoWrapping
-        0,  // Disable use_italics
-        0,  // Set paging_mode to Never
-        NULL,
-        0
+        1,  // Enable true_color
+        1,  // Enable header
+        1,  // Enable line_numbers
+        1,  // Enable grid
+        1,  // Enable rule
+        0,  // Enable show_nonprintable
+        1,  // Enable snip
+        1,  // Set wrapping_mode to Character
+        1,  // Enable use_italics
+        1,  // Set paging_mode to Always
+        theme,
+        0   // Highlight the first line
     );
-
     return 0;
 }

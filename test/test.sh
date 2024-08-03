@@ -11,7 +11,7 @@ ALL_TESTS_PASSED=true
 
 # Run the test and capture the output
 OUTPUT=$(./test_print_pretty)
-EXPECTED_OUTPUT="[38;5;231m<[0m[38;5;203mspan[0m[38;5;149m [0m[38;5;149mstyle[0m[38;5;149m=[0m[38;5;231m\"[0m[38;5;81mcolor[0m[38;5;231m:[0m[38;5;149m [0m[38;5;141m#[0m[38;5;141mff00cc[0m[38;5;231m\"[0m[38;5;231m>[0m[38;5;231mHello world![0m[38;5;231m</[0m[38;5;203mspan[0m[38;5;231m>[0m"
+EXPECTED_OUTPUT=$(cat expected_output.txt)
 
 echo "Testing print_pretty function"
 echo "Expected: $EXPECTED_OUTPUT"
