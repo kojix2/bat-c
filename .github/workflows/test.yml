@@ -5,7 +5,7 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        os: ["ubuntu"]
+        os: ["ubuntu", "macos"]
     steps:
       - uses: actions/checkout@v4
       - run: rustup update
