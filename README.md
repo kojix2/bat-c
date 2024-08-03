@@ -71,6 +71,8 @@ int main()
 {
     const char *text = "<span style=\"color: #ff00cc\">Hello world!</span>\n";
     const char *language = "html";
+    const char *theme = "Nord";
+
     BatPrintOptions options = {
         .tab_width = 4,
         .colored_output = 1,
@@ -83,7 +85,7 @@ int main()
         .snip = 1,
         .wrapping_mode = 1,
         .use_italics = 1,
-        .paging_mode = 1,
+        .paging_mode = 0,
         .highlight_line = 0};
 
     // Test with bytes input
@@ -92,7 +94,7 @@ int main()
         strlen(text),
         BatBytes,
         language,
-        NULL,
+        theme,
         options);
 
     // Test with file input
@@ -102,7 +104,7 @@ int main()
         0,
         BatFile,
         language,
-        NULL,
+        theme,
         options);
 
     // Test with multiple files input
@@ -112,7 +114,7 @@ int main()
         2,
         BatFiles,
         language,
-        NULL,
+        theme,
         options);
 
     return 0;
