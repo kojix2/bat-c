@@ -9,3 +9,6 @@ crate-type = ["cdylib", "staticlib"]
 [dependencies]
 bat = "0.24"
 
+[profile.release]
+lto = true
+codegen-units = 1
