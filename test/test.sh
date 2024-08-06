@@ -3,7 +3,7 @@
 # Add missing import
 export LD_LIBRARY_PATH="../target/release:../target/debug"
 # MacOS
-export DYLD_LIBRARY_PATH="../target/debug:../target/debug"
+export DYLD_LIBRARY_PATH="../target/release:../target/debug"
 
 # Compile the C test file
 gcc test_print_pretty.c -L ../target/release -L ../target/debug -lbat_c -o test_print_pretty
