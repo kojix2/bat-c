@@ -47,3 +47,5 @@ void bat_print_pretty(const char *input,
                       const char *language,
                       const char *theme,
                       struct BatPrintOptions options);
+
+const char *bat_c_version(void);

@@ -1,7 +1,7 @@
 extern crate bat;
 
 use bat::{Input, PrettyPrinter};
-use std::ffi::CStr;
+use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 use std::path::Path;
 use std::slice;
@@ -127,6 +127,14 @@ pub unsafe extern "C" fn bat_print_pretty(
     });
 }
 
+// Return the version of the library
+#[no_mangle]
+pub extern "C" fn bat_c_version() -> *const c_char {
+    let version = env!("CARGO_PKG_VERSION");
+    let version_cstr = CString::new(version).unwrap();
+    version_cstr.into_raw()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -234,5 +242,11 @@ mod tests {
                 options,
             );
         }
+    }
+
+    #[test]
+    fn test_bat_c_version() {
+        let version = unsafe { CStr::from_ptr(bat_c_version()).to_str().unwrap() };
+        assert_eq!(version, env!("CARGO_PKG_VERSION"));
     }
 }
