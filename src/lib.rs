@@ -10,9 +10,9 @@ use std::str;
 /// BatInputType enum to specify the type of input
 #[repr(C)]
 pub enum BatInputType {
-    Bytes,
-    File,
-    Files,
+    BatBytes,
+    BatFile,
+    BatFiles,
 }
 
 /// Struct to hold print options
@@ -88,7 +88,7 @@ pub unsafe extern "C" fn bat_print_pretty(
         .highlight(options.highlight_line);
 
     match input_type {
-        BatInputType::Bytes => {
+        BatInputType::BatBytes => {
             if !input.is_null() && length > 0 {
                 let slice = slice::from_raw_parts(input as *const u8, length);
                 if let Ok(input_str) = str::from_utf8(slice) {
@@ -96,14 +96,14 @@ pub unsafe extern "C" fn bat_print_pretty(
                 }
             }
         }
-        BatInputType::File => {
+        BatInputType::BatFile => {
             if !input.is_null() {
                 if let Ok(file_path) = CStr::from_ptr(input).to_str() {
                     printer.input_file(Path::new(file_path));
                 }
             }
         }
-        BatInputType::Files => {
+        BatInputType::BatFiles => {
             if !input.is_null() && length > 0 {
                 let slice = slice::from_raw_parts(input as *const *const c_char, length);
                 let paths: Vec<&Path> = slice
@@ -157,7 +157,7 @@ mod tests {
             bat_print_pretty(
                 input_cstr.as_ptr(),
                 input.len(),
-                BatInputType::Bytes,
+                BatInputType::BatBytes,
                 language_cstr.as_ptr(),
                 std::ptr::null(),
                 options,
@@ -190,7 +190,7 @@ mod tests {
             bat_print_pretty(
                 file_path_cstr.as_ptr(),
                 0,
-                BatInputType::File,
+                BatInputType::BatFile,
                 language_cstr.as_ptr(),
                 std::ptr::null(),
                 options,
@@ -228,7 +228,7 @@ mod tests {
             bat_print_pretty(
                 file_paths_ptr.as_ptr() as *const c_char,
                 file_paths.len(),
-                BatInputType::Files,
+                BatInputType::BatFiles,
                 language_cstr.as_ptr(),
                 std::ptr::null(),
                 options,
