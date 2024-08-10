@@ -24,7 +24,7 @@ int main()
         .highlight_line = 0};
 
     // Test with bytes input
-    bat_print_pretty(
+    bat_pretty_print(
         text,
         strlen(text),
         BatBytes,
@@ -34,7 +34,7 @@ int main()
 
     // Test with file input
     const char *file_path = "test_input.html";
-    bat_print_pretty(
+    bat_pretty_print(
         file_path,
         0,
         BatFile,
@@ -44,7 +44,7 @@ int main()
 
     // Test with multiple files input
     const char *file_paths[] = {"test_input1.html", "test_input2.html"};
-    bat_print_pretty(
+    bat_pretty_print(
         (const char *)file_paths,
         2,
         BatFiles,

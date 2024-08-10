@@ -49,9 +49,11 @@ typedef struct BatPrintOptions {
 } BatPrintOptions;
 
 /**
- * Unified function to pretty print with specified options.
+ * Pretty print with specified options.
+ * # Safety
+ * This function is marked as unsafe because it dereferences raw pointers.
  */
-void bat_print_pretty(const char *input,
+void bat_pretty_print(const char *input,
                       size_t length,
                       enum BatInputType input_type,
                       const char *language,
@@ -89,7 +91,7 @@ int main()
         .highlight_line = 0};
 
     // Test with bytes input
-    bat_print_pretty(
+    bat_pretty_print(
         text,
         strlen(text),
         BatBytes,
@@ -99,7 +101,7 @@ int main()
 
     // Test with file input
     const char *file_path = "test_input.html";
-    bat_print_pretty(
+    bat_pretty_print(
         file_path,
         0,
         BatFile,
@@ -109,7 +111,7 @@ int main()
 
     // Test with multiple files input
     const char *file_paths[] = {"test_input1.html", "test_input2.html"};
-    bat_print_pretty(
+    bat_pretty_print(
         (const char *)file_paths,
         2,
         BatFiles,
