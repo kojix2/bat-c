@@ -5,16 +5,16 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        os: ["ubuntu", "macos"]
+        os: ["ubuntu", "macos", "windows"]
     steps:
       - uses: actions/checkout@v4
       - run: rustup update
-      - run: cargo build --verbose
+      - run: cargo build --release --verbose
       - run: cargo test --verbose
-      - run: cd test && ./test.sh
+      - if: ${{ matrix.os }} == 'windows'
+        run: cd test && ./test.sh
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-test
           path: |
-            target/debug/deps/bat_c-*
-            target/debug/deps/libbat_c-*
+            target/debug/
