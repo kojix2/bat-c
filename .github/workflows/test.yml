@@ -11,16 +11,33 @@ jobs:
       - run: rustup update
       - run: cargo test --verbose
       - run: cargo build --verbose
-      - if: ${{ matrix.os }} == 'windows'
+
+      - name: Run test script
+        if: matrix.os != 'windows'
         run: cd test && ./test.sh
+
       - run: cargo build --release --verbose
+
+      - name: Create Zip Archive for Linux
+        if: matrix.os == 'ubuntu'
+        run: |
+          cd target/release
+          zip -r bat_c_${{ matrix.os }}.zip libbat_c.a libbat_c.so ../../bat.h ../../README.md
+
+      - name: Create Zip Archive for macOS
+        if: matrix.os == 'macos'
+        run: |
+          cd target/release
+          zip -r bat_c_${{ matrix.os }}.zip libbat_c.a libbat_c.dylib ../../bat.h ../../README.md
+
+      - name: Create Zip Archive for Windows
+        if: matrix.os == 'windows'
+        run: |
+          $output = "target/release/bat_c_${{ matrix.os }}.zip"
+          Compress-Archive -Path "target/release/bat_c.lib", "target/release/bat_c.dll", "target/release/bat_c.dll.lib", "bat.h", "README.md" -DestinationPath $output
+
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-test
           path: |
-            target/release/libbat_c.a
-            target/release/libbat_c.so
-            target/release/libbat_c.dylib
-            target/release/bat_c.lib
-            target/release/bat_c.dll
-            target/release/bat_c.dll.lib
+            target/release/bat_c_${{ matrix.os }}.zip

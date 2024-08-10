@@ -18,11 +18,26 @@ jobs:
       - name: Build
         run: cargo build --release --verbose
 
+      - name: Create Zip Archive for Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          cd target/release
+          zip -r bat_c_${{ matrix.os }}.zip libbat_c.a libbat_c.so ../../bat.h ../../README.md
+
+      - name: Create Zip Archive for macOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          cd target/release
+          zip -r bat_c_${{ matrix.os }}.zip libbat_c.a libbat_c.dylib ../../bat.h ../../README.md
+
+      - name: Create Zip Archive for Windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          $output = "target/release/bat_c_${{ matrix.os }}.zip"
+          Compress-Archive -Path "target/release/bat_c.lib", "target/release/bat_c.dll", "target/release/bat_c.dll.lib", "bat.h", "README.md", -DestinationPath $output
+
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            target/release/libbat_c.so
-            target/release/libbat_c.dylib
-            target/release/bat_c.dll
-            target/release/bat_c.dll.lib
+            target/release/bat_c_${{ matrix.os }}.zip
