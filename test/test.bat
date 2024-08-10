@@ -1,7 +1,7 @@
 @echo off
 
 REM Compile the C test file using cl.exe, linking necessary Windows libraries
-cl test_print_pretty.c ^
+cl test_pretty_print.c ^
     /I ..\target\release ^
     /I ..\target\debug ^
     /link ^
@@ -22,13 +22,13 @@ cl test_print_pretty.c ^
     ucrt.lib ^
     /NODEFAULTLIB:MSVCRT ^
     /NODEFAULTLIB:libucrt.lib ^
-    /out:test_print_pretty.exe
+    /out:test_pretty_print.exe
 
 REM Check if the compilation was successful
-if not exist "test_print_pretty.exe" (
+if not exist "test_pretty_print.exe" (
     echo Compilation failed
     exit /b 1
 )
 
 REM Run the compiled test
-test_print_pretty.exe
+test_pretty_print.exe

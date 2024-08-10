@@ -7,7 +7,7 @@ edition = "2021"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
-bat = "0.24"
+bat = { git = "https://github.com/kojix2/bat", branch = "0.24.0" }
 
 [profile.dev]
 rpath = true

@@ -104,7 +104,31 @@ fn set_input(
     Ok(())
 }
 
-/// Common logic for pretty printing
+fn prepare_printer<'a>(
+    input: *const c_char,
+    length: usize,
+    input_type: BatInputType,
+    language: Option<&'a str>,
+    theme: Option<&'a str>,
+    options: BatPrintOptions,
+) -> Result<PrettyPrinter<'a>, String> {
+    let mut printer = PrettyPrinter::new();
+
+    if let Some(lang) = language {
+        printer.language(lang);
+    }
+
+    if let Some(thm) = theme {
+        printer.theme(thm);
+    }
+
+    options.apply_to_printer(&mut printer);
+
+    set_input(&mut printer, input_type, input, length)?;
+
+    Ok(printer)
+}
+
 fn execute_pretty_print(
     input: *const c_char,
     length: usize,
@@ -113,18 +137,7 @@ fn execute_pretty_print(
     theme: Option<&str>,
     options: BatPrintOptions,
 ) -> Result<(), String> {
-    let mut printer = PrettyPrinter::new();
-
-    if language.is_some() {
-        printer.language(language.unwrap());
-    }
-
-    if theme.is_some() {
-        printer.theme(theme.unwrap());
-    }
-    options.apply_to_printer(&mut printer);
-
-    set_input(&mut printer, input_type, input, length)?;
+    let mut printer = prepare_printer(input, length, input_type, language, theme, options)?;
 
     if printer.print().is_err() {
         Err("Error printing.".into())
@@ -134,8 +147,6 @@ fn execute_pretty_print(
 }
 
 /// Pretty print with specified options.
-/// # Safety
-/// This function is marked as unsafe because it dereferences raw pointers.
 #[no_mangle]
 pub unsafe extern "C" fn bat_pretty_print(
     input: *const c_char,
@@ -162,7 +173,60 @@ pub unsafe extern "C" fn bat_pretty_print(
     }
 }
 
-// Return the version of the library
+/// Pretty print output to a string.
+#[no_mangle]
+pub unsafe extern "C" fn bat_pretty_print_to_string(
+    input: *const c_char,
+    length: usize,
+    input_type: BatInputType,
+    language: *const c_char,
+    theme: *const c_char,
+    options: BatPrintOptions,
+    output_length: *mut usize,
+) -> *const c_char {
+    let language = if language.is_null() {
+        None
+    } else {
+        Some(to_str(language).unwrap())
+    };
+
+    let theme = if theme.is_null() {
+        None
+    } else {
+        Some(to_str(theme).unwrap())
+    };
+
+    let mut printer = match prepare_printer(input, length, input_type, language, theme, options) {
+        Ok(printer) => printer,
+        Err(err) => {
+            eprintln!("{}", err);
+            return std::ptr::null();
+        }
+    };
+
+    let output = match printer.print_to_string() {
+        Ok(output) => output,
+        Err(err) => {
+            eprintln!("{}", err);
+            return std::ptr::null();
+        }
+    };
+
+    let output_cstr = CString::new(output.clone()).unwrap();
+    *output_length = output.len();
+    output_cstr.into_raw()
+}
+
+
+/// Free the string allocated by `bat_pretty_print_to_string`.
+#[no_mangle]
+pub unsafe extern "C" fn bat_free_string(s: *const c_char) {
+    if !s.is_null() {
+        drop(CString::from_raw(s as *mut c_char));
+    }
+}
+
+/// Return the version of the library
 #[no_mangle]
 pub extern "C" fn bat_c_version() -> *const c_char {
     let version = env!("CARGO_PKG_VERSION");
@@ -176,7 +240,7 @@ mod tests {
     use std::ffi::CString;
 
     #[test]
-    fn test_bat_print_pretty_bytes() {
+    fn test_bat_pretty_print_bytes() {
         let input = "<span style=\"color: #ff00cc\">Hello world!</span>\n";
         let input_cstr = CString::new(input).unwrap();
         let language_cstr = CString::new("html").unwrap();
@@ -209,7 +273,7 @@ mod tests {
     }
 
     #[test]
-    fn test_bat_print_pretty_file() {
+    fn test_bat_pretty_print_file() {
         let file_path = "test/test_input.html";
         let file_path_cstr = CString::new(file_path).unwrap();
         let language_cstr = CString::new("html").unwrap();
@@ -242,7 +306,7 @@ mod tests {
     }
 
     #[test]
-    fn test_bat_print_pretty_files() {
+    fn test_bat_pretty_print_files() {
         let file_paths = ["test/test_input1.html", "test/test_input2.html"];
         let file_paths_cstr: Vec<CString> = file_paths
             .iter()
@@ -276,6 +340,50 @@ mod tests {
                 std::ptr::null(),
                 options,
             );
+        }
+    }
+
+    #[test]
+    fn test_bat_pretty_print_to_string() {
+        let input = "<span style=\"color: #ff00cc\">Hello world!</span>\n";
+        let input_cstr = CString::new(input).unwrap();
+        let language_cstr = CString::new("html").unwrap();
+        let options = BatPrintOptions {
+            tab_width: 4,
+            colored_output: true,
+            true_color: true,
+            header: true,
+            line_numbers: true,
+            grid: true,
+            rule: true,
+            show_nonprintable: false,
+            snip: true,
+            wrapping_mode: 1,
+            use_italics: true,
+            paging_mode: 0,
+            highlight_line: 0,
+        };
+
+        let mut output_length = 0;
+        let output = unsafe {
+            bat_pretty_print_to_string(
+                input_cstr.as_ptr(),
+                input.len(),
+                BatInputType::BatBytes,
+                language_cstr.as_ptr(),
+                std::ptr::null(),
+                options,
+                &mut output_length,
+            )
+        };
+
+        assert!(!output.is_null());
+
+        let output_str = unsafe { CStr::from_ptr(output).to_str().unwrap() };
+        assert_eq!(output_str.len(), output_length);
+
+        unsafe {
+            bat_free_string(output);
         }
     }
 

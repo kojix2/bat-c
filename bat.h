@@ -38,8 +38,6 @@ typedef struct BatPrintOptions {
 
 /**
  * Pretty print with specified options.
- * # Safety
- * This function is marked as unsafe because it dereferences raw pointers.
  */
 void bat_pretty_print(const char *input,
                       size_t length,
@@ -48,4 +46,23 @@ void bat_pretty_print(const char *input,
                       const char *theme,
                       struct BatPrintOptions options);
 
+/**
+ * Pretty print output to a string.
+ */
+const char *bat_pretty_print_to_string(const char *input,
+                                       size_t length,
+                                       enum BatInputType input_type,
+                                       const char *language,
+                                       const char *theme,
+                                       struct BatPrintOptions options,
+                                       size_t *output_length);
+
+/**
+ * Free the string allocated by `bat_pretty_print_to_string`.
+ */
+void bat_free_string(const char *s);
+
+/**
+ * Return the version of the library
+ */
 const char *bat_c_version(void);
