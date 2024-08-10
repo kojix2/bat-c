@@ -30,19 +30,26 @@ jobs:
         if: matrix.os == 'ubuntu'
         run: |
           cd target/release
-          zip -r bat_c_${{ matrix.os }}.zip libbat_c.a libbat_c.so ../../bat.h ../../README.md
+          zip -r bat_c_ubuntu.zip libbat_c.a libbat_c.so ../../bat.h ../../README.md
 
       - name: Create Zip Archive for macOS
         if: matrix.os == 'macos'
         run: |
           cd target/release
-          zip -r bat_c_${{ matrix.os }}.zip libbat_c.a libbat_c.dylib ../../bat.h ../../README.md
+          zip -r bat_c_macos.zip libbat_c.a libbat_c.dylib ../../bat.h ../../README.md
 
       - name: Create Zip Archive for Windows
         if: matrix.os == 'windows'
         run: |
-          $output = "target/release/bat_c_${{ matrix.os }}.zip"
-          Compress-Archive -Path "target/release/bat_c.lib", "target/release/bat_c.dll", "target/release/bat_c.dll.lib", "bat.h", "README.md" -DestinationPath $output
+          $output = "target/release/bat_c_windows.zip"
+          $paths = @(
+            "target/release/bat_c.lib",
+            "target/release/bat_c.dll",
+            "target/release/bat_c.dll.lib",
+            "bat.h",
+            "README.md"
+          )
+          Compress-Archive -Path $paths -DestinationPath $output
 
       - uses: actions/upload-artifact@v4
         with:
