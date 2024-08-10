@@ -9,12 +9,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: rustup update
-      - run: cargo build --release --verbose
       - run: cargo test --verbose
+      - run: cargo build --verbose
       - if: ${{ matrix.os }} == 'windows'
         run: cd test && ./test.sh
+      - run: cargo build --release --verbose
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-test
           path: |
-            target/debug/
+            target/release/libbat_c.a
+            target/release/libbat_c.so
+            target/release/libbat_c.dylib
+            target/release/bat_c.lib
+            target/release/bat_c.dll
+            target/release/bat_c.dll.lib
