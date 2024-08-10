@@ -12,9 +12,17 @@ jobs:
       - run: cargo test --verbose
       - run: cargo build --verbose
 
-      - name: Run test script
+      - name: Make cl.exe available on Windows
+        if: matrix.os == 'windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Run test script on Linux and macOS
         if: matrix.os != 'windows'
         run: cd test && ./test.sh
+      
+      - name: Run test script on Windows
+        if: matrix.os == 'windows'
+        run: cd test && ./test.bat
 
       - run: cargo build --release --verbose
 
