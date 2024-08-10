@@ -12,3 +12,9 @@ jobs:
       - run: cargo build --verbose
       - run: cargo test --verbose
       - run: cd test && ./test.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-test
+          path: |
+            target/debug/deps/bat_c-*
+            target/debug/deps/libbat_c-*
