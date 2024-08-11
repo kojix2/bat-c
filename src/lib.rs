@@ -146,7 +146,8 @@ fn execute_pretty_print(
     }
 }
 
-/// Pretty print with specified options.
+/// Print with specified options.
+/// Returns 0 on success, 1 on error.
 #[no_mangle]
 pub unsafe extern "C" fn bat_pretty_print(
     input: *const c_char,
@@ -155,7 +156,7 @@ pub unsafe extern "C" fn bat_pretty_print(
     language: *const c_char,
     theme: *const c_char,
     options: BatPrintOptions,
-) {
+) -> i32 {
     let language = if language.is_null() {
         None
     } else {
@@ -168,12 +169,17 @@ pub unsafe extern "C" fn bat_pretty_print(
         Some(to_str(theme).unwrap())
     };
 
-    if let Err(err) = execute_pretty_print(input, length, input_type, language, theme, options) {
-        eprintln!("{}", err);
+    match execute_pretty_print(input, length, input_type, language, theme, options) {
+        Ok(_) => 0,
+        Err(err) => {
+            eprintln!("{}", err);
+            1
+        }
     }
 }
 
 /// Pretty print output to a string.
+/// Returns 0 on success, 1 on error.
 #[no_mangle]
 pub unsafe extern "C" fn bat_pretty_print_to_string(
     input: *const c_char,
@@ -182,8 +188,9 @@ pub unsafe extern "C" fn bat_pretty_print_to_string(
     language: *const c_char,
     theme: *const c_char,
     options: BatPrintOptions,
+    output: *mut *const c_char,
     output_length: *mut usize,
-) -> *const c_char {
+) -> i32 {
     let language = if language.is_null() {
         None
     } else {
@@ -200,23 +207,24 @@ pub unsafe extern "C" fn bat_pretty_print_to_string(
         Ok(printer) => printer,
         Err(err) => {
             eprintln!("{}", err);
-            return std::ptr::null();
+            return 1;
         }
     };
 
-    let output = match printer.print_to_string() {
-        Ok(output) => output,
+    let output_str = match printer.print_to_string() {
+        Ok(output_str) => output_str,
         Err(err) => {
             eprintln!("{}", err);
-            return std::ptr::null();
+            return 1;
         }
     };
 
-    let output_cstr = CString::new(output.clone()).unwrap();
-    *output_length = output.len();
-    output_cstr.into_raw()
-}
+    let output_cstr = CString::new(output_str).unwrap();
+    *output_length = output_cstr.to_bytes().len();
+    *output = output_cstr.into_raw();
 
+    0
+}
 
 /// Free the string allocated by `bat_pretty_print_to_string`.
 #[no_mangle]
@@ -259,7 +267,7 @@ mod tests {
             highlight_line: 0,
         };
 
-        unsafe {
+        let result = unsafe {
             bat_pretty_print(
                 input_cstr.as_ptr(),
                 input.len(),
@@ -267,8 +275,10 @@ mod tests {
                 language_cstr.as_ptr(),
                 std::ptr::null(),
                 options,
-            );
-        }
+            )
+        };
+
+        assert_eq!(result, 0);
     }
 
     #[test]
@@ -292,7 +302,7 @@ mod tests {
             highlight_line: 0,
         };
 
-        unsafe {
+        let result = unsafe {
             bat_pretty_print(
                 file_path_cstr.as_ptr(),
                 0,
@@ -300,8 +310,10 @@ mod tests {
                 language_cstr.as_ptr(),
                 std::ptr::null(),
                 options,
-            );
-        }
+            )
+        };
+
+        assert_eq!(result, 0);
     }
 
     #[test]
@@ -330,7 +342,7 @@ mod tests {
             highlight_line: 0,
         };
 
-        unsafe {
+        let result = unsafe {
             bat_pretty_print(
                 file_paths_ptr.as_ptr() as *const c_char,
                 file_paths.len(),
@@ -338,8 +350,10 @@ mod tests {
                 language_cstr.as_ptr(),
                 std::ptr::null(),
                 options,
-            );
-        }
+            )
+        };
+
+        assert_eq!(result, 0);
     }
 
     #[test]
@@ -363,8 +377,9 @@ mod tests {
             highlight_line: 0,
         };
 
+        let mut output_str = std::ptr::null();
         let mut output_length = 0;
-        let output = unsafe {
+        let result = unsafe {
             bat_pretty_print_to_string(
                 input_cstr.as_ptr(),
                 input.len(),
@@ -372,17 +387,20 @@ mod tests {
                 language_cstr.as_ptr(),
                 std::ptr::null(),
                 options,
+                &mut output_str,
                 &mut output_length,
             )
         };
 
-        assert!(!output.is_null());
+        assert_eq!(result, 0);
+        assert_eq!(output_str.is_null(), false);
 
-        let output_str = unsafe { CStr::from_ptr(output).to_str().unwrap() };
-        assert_eq!(output_str.len(), output_length);
+        // check if the output is a valid string
+        let output = unsafe { CStr::from_ptr(output_str).to_str().unwrap() };
+        assert_eq!(output.contains("Hello world!"), true);
 
         unsafe {
-            bat_free_string(output);
+            bat_free_string(output_str);
         }
     }
 
