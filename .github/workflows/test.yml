@@ -9,7 +9,9 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
-      - run: rustup update
+        with:
+          submodules: true
+      - run: git submodule update --init
       - run: cargo test --verbose
       - run: cargo build --verbose
 
