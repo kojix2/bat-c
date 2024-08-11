@@ -37,25 +37,28 @@ typedef struct BatPrintOptions {
 } BatPrintOptions;
 
 /**
- * Pretty print with specified options.
+ * Print with specified options.
+ * Returns 0 on success, 1 on error.
  */
-void bat_pretty_print(const char *input,
-                      size_t length,
-                      enum BatInputType input_type,
-                      const char *language,
-                      const char *theme,
-                      struct BatPrintOptions options);
+int32_t bat_pretty_print(const char *input,
+                         size_t length,
+                         enum BatInputType input_type,
+                         const char *language,
+                         const char *theme,
+                         struct BatPrintOptions options);
 
 /**
  * Pretty print output to a string.
+ * Returns 0 on success, 1 on error.
  */
-const char *bat_pretty_print_to_string(const char *input,
-                                       size_t length,
-                                       enum BatInputType input_type,
-                                       const char *language,
-                                       const char *theme,
-                                       struct BatPrintOptions options,
-                                       size_t *output_length);
+int32_t bat_pretty_print_to_string(const char *input,
+                                   size_t length,
+                                   enum BatInputType input_type,
+                                   const char *language,
+                                   const char *theme,
+                                   struct BatPrintOptions options,
+                                   const char **output,
+                                   size_t *output_length);
 
 /**
  * Free the string allocated by `bat_pretty_print_to_string`.
