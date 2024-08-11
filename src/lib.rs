@@ -229,9 +229,8 @@ pub unsafe extern "C" fn bat_free_string(s: *const c_char) {
 /// Return the version of the library
 #[no_mangle]
 pub extern "C" fn bat_c_version() -> *const c_char {
-    let version = env!("CARGO_PKG_VERSION");
-    let version_cstr = CString::new(version).unwrap();
-    version_cstr.into_raw()
+    static VERSION: &str = concat!(env!("CARGO_PKG_VERSION"), "\0");
+    VERSION.as_ptr() as *const c_char
 }
 
 #[cfg(test)]
