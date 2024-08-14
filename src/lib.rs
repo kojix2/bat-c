@@ -211,13 +211,11 @@ pub unsafe extern "C" fn bat_pretty_print_to_string(
         }
     };
 
-    let output_str = match printer.print_to_string() {
-        Ok(output_str) => output_str,
-        Err(err) => {
-            eprintln!("{}", err);
-            return 1;
-        }
-    };
+    let mut output_str = String::new();
+    if let Err(err) = printer.print_with_writer(Some(&mut output_str)) {
+        eprintln!("{}", err);
+        return 1;
+    }
 
     let output_cstr = CString::new(output_str).unwrap();
     *output_length = output_cstr.to_bytes().len();
