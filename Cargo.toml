@@ -7,7 +7,9 @@ edition = "2021"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
-bat = { path = "bat" }
+bat = { path = "bat", default-features = false, features = ["paging", "regex-onig"] }
+
+# See https://github.com/sharkdp/bat/blob/master/Cargo.toml for features.
 
 # The following fails on Windows because the bat contains many submodules 
 # and the Jinja2 files contain paths that are invalid for Windows.
