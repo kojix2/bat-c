@@ -20,6 +20,10 @@ cl test_pretty_print.c ^
     Shlwapi.lib ^
     Userenv.lib ^
     ucrt.lib ^
+    OleAut32.lib ^
+    Ole32.lib ^
+    Propsys.lib ^
+    RuntimeObject.lib ^
     /NODEFAULTLIB:MSVCRT ^
     /NODEFAULTLIB:libucrt.lib ^
     /out:test_pretty_print.exe
