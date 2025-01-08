@@ -7,9 +7,8 @@ edition = "2021"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
-bat = { path = "bat", default-features = false, features = ["paging", "regex-onig"] }
+bat = "0.25.0"
 
-# See https://github.com/sharkdp/bat/blob/master/Cargo.toml for features.
 
 [profile.dev]
 rpath = true
