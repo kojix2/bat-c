@@ -11,7 +11,6 @@ cl test_pretty_print.c ^
     OneCore.lib ^
     Gdi32.lib ^
     Shell32.lib ^
-    ntdll.lib ^
     ws2_32.lib ^
     bcrypt.lib ^
     secur32.lib ^
