@@ -20,6 +20,7 @@ cl test_pretty_print.c ^
     OleAut32.lib ^
     Propsys.lib ^
     RuntimeObject.lib ^
+    /NODEFAULTLIB:libucrt.lib ^
     /NODEFAULTLIB:MSVCRT ^
     /out:test_pretty_print.exe
 
