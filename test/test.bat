@@ -22,7 +22,6 @@ cl test_pretty_print.c ^
     Propsys.lib ^
     RuntimeObject.lib ^
     /NODEFAULTLIB:MSVCRT ^
-    /NODEFAULTLIB:libucrt.lib ^
     /out:test_pretty_print.exe
 
 REM Check if the compilation was successful
