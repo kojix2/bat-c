@@ -8,10 +8,7 @@ cl test_pretty_print.c ^
     /LIBPATH:..\target\release ^
     /LIBPATH:..\target\debug ^
     bat_c.lib ^
-    Kernel32.lib ^
-    Advapi32.lib ^
-    User32.lib ^
-    Gdi32.lib ^
+    OneCore.lib ^
     Shell32.lib ^
     ntdll.lib ^
     ws2_32.lib ^
@@ -21,11 +18,10 @@ cl test_pretty_print.c ^
     Userenv.lib ^
     ucrt.lib ^
     OleAut32.lib ^
-    Ole32.lib ^
     Propsys.lib ^
     RuntimeObject.lib ^
-    /NODEFAULTLIB:MSVCRT ^
     /NODEFAULTLIB:libucrt.lib ^
+    /NODEFAULTLIB:MSVCRT ^
     /out:test_pretty_print.exe
 
 REM Check if the compilation was successful
