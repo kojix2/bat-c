@@ -9,7 +9,6 @@ cl test_pretty_print.c ^
     /LIBPATH:..\target\debug ^
     bat_c.lib ^
     OneCore.lib ^
-    User32.lib ^
     Gdi32.lib ^
     Shell32.lib ^
     ntdll.lib ^
