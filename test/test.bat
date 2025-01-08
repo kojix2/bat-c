@@ -18,7 +18,6 @@ cl test_pretty_print.c ^
     Userenv.lib ^
     ucrt.lib ^
     OleAut32.lib ^
-    Ole32.lib ^
     Propsys.lib ^
     RuntimeObject.lib ^
     /NODEFAULTLIB:MSVCRT ^
