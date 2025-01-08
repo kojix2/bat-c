@@ -8,7 +8,6 @@ cl test_pretty_print.c ^
     /LIBPATH:..\target\release ^
     /LIBPATH:..\target\debug ^
     bat_c.lib ^
-    Kernel32.lib ^
     OneCore.lib ^
     Advapi32.lib ^
     User32.lib ^
