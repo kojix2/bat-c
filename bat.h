@@ -38,6 +38,8 @@ typedef struct BatPrintOptions {
 
 /**
  * Print with specified options.
+ * If input and length are invalid or mismatched,　undefined behavior may occur.
+ * The caller must ensure valid memory and the correct length.
  * Returns 0 on success, 1 on error.
  */
 int32_t bat_pretty_print(const char *input,
@@ -49,6 +51,10 @@ int32_t bat_pretty_print(const char *input,
 
 /**
  * Pretty print output to a string.
+ * If input and length are invalid or mismatched,　undefined behavior may occur.
+ * The caller must ensure valid memory and the correct length.
+ * Strings returned by bat_pretty_print_to_string are allocated by the library.
+ * Call bat_free_string exactly once to free them after use.
  * Returns 0 on success, 1 on error.
  */
 int32_t bat_pretty_print_to_string(const char *input,
