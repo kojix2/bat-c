@@ -160,7 +160,13 @@ pub unsafe extern "C" fn bat_pretty_print(
     let language = if language.is_null() {
         None
     } else {
-        Some(to_str(language).unwrap())
+        match to_str(language) {
+            Ok(lang) => Some(lang),
+            Err(err) => {
+                eprintln!("{}", err);
+                return 1;
+            }
+        }
     };
 
     let theme = if theme.is_null() {
@@ -194,7 +200,13 @@ pub unsafe extern "C" fn bat_pretty_print_to_string(
     let language = if language.is_null() {
         None
     } else {
-        Some(to_str(language).unwrap())
+        match to_str(language) {
+            Ok(lang) => Some(lang),
+            Err(err) => {
+                eprintln!("{}", err);
+                return 1;
+            }
+        }
     };
 
     let theme = if theme.is_null() {
