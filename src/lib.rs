@@ -145,6 +145,8 @@ fn execute_pretty_print(
 }
 
 /// Print with specified options.
+/// If input and length are invalid or mismatched,　undefined behavior may occur.
+/// The caller must ensure valid memory and the correct length.
 /// Returns 0 on success, 1 on error.
 #[no_mangle]
 pub unsafe extern "C" fn bat_pretty_print(
@@ -183,6 +185,10 @@ pub unsafe extern "C" fn bat_pretty_print(
 }
 
 /// Pretty print output to a string.
+/// If input and length are invalid or mismatched,　undefined behavior may occur.
+/// The caller must ensure valid memory and the correct length.
+/// Strings returned by bat_pretty_print_to_string are allocated by the library.
+/// Call bat_free_string exactly once to free them after use.
 /// Returns 0 on success, 1 on error.
 #[no_mangle]
 pub unsafe extern "C" fn bat_pretty_print_to_string(
