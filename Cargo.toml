@@ -9,11 +9,12 @@ crate-type = ["cdylib", "staticlib"]
 [dependencies]
 bat = "0.25.0"
 
-
 [profile.dev]
 rpath = true
 
 [profile.release]
-lto = true
+lto = "fat"
+debug = false
+strip = true
 codegen-units = 1
 rpath = true
