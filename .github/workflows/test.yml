@@ -17,7 +17,7 @@ jobs:
 
       - name: Make cl.exe available on Windows
         if: matrix.os == 'windows'
-        uses: ilammy/msvc-dev-cmd@v1
+        uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1
 
       - name: Run test script on Linux and macOS
         if: matrix.os != 'windows'
@@ -54,7 +54,7 @@ jobs:
           )
           Compress-Archive -Path $paths -DestinationPath $output
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: ${{ matrix.os }}-test
           path: |
