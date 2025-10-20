@@ -48,7 +48,7 @@ jobs:
           Compress-Archive -Path $paths -DestinationPath $output
 
       - name: Upload Release Asset
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@6da8fa9354ddfdc4aeace5fc48d7f679b5214090 # v2
         with:
           files: |
             target/release/bat_c_ubuntu.zip
