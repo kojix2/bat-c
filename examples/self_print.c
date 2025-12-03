@@ -3,7 +3,7 @@
 
 int main(void)
 {
-    // This example prints its own source code with bat-style syntax highlighting.
+    // Highlight this source file.
     const char *file = __FILE__;
 
     BatPrintOptions opt = {
@@ -16,7 +16,7 @@ int main(void)
         .rule = 0,
         .show_nonprintable = 0,
         .snip = 1,
-        .wrapping_mode = 1, // Character wrapping
+        .wrapping_mode = 1, // char
         .use_italics = 1,
         .paging_mode = 0, // Never
         .highlight_line = 0,
@@ -27,15 +27,15 @@ int main(void)
 
     if (bat_pretty_print_to_string(
             file,
-            0,       // length is ignored for BatFile
-            BatFile, // treat input as a file path
-            "c",     // language (NULL for auto-detection)
+            0,       // len (unused)
+            BatFile, // file path
+            "c",     // language
             "Nord",  // theme
             opt,
             &out,
             &len) != 0)
     {
-        fprintf(stderr, "bat_pretty_print_to_string failed\n");
+        fprintf(stderr, "error\n");
         return 1;
     }
 
