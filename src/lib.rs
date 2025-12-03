@@ -172,7 +172,13 @@ pub unsafe extern "C" fn bat_pretty_print(
     let theme = if theme.is_null() {
         None
     } else {
-        Some(to_str(theme).unwrap())
+        match to_str(theme) {
+            Ok(thm) => Some(thm),
+            Err(err) => {
+                eprintln!("{}", err);
+                return 1;
+            }
+        }
     };
 
     match execute_pretty_print(input, length, input_type, language, theme, options) {
@@ -216,7 +222,13 @@ pub unsafe extern "C" fn bat_pretty_print_to_string(
     let theme = if theme.is_null() {
         None
     } else {
-        Some(to_str(theme).unwrap())
+        match to_str(theme) {
+            Ok(thm) => Some(thm),
+            Err(err) => {
+                eprintln!("{}", err);
+                return 1;
+            }
+        }
     };
 
     let mut printer = match prepare_printer(input, length, input_type, language, theme, options) {
