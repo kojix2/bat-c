@@ -18,6 +18,10 @@ cargo build --release
 # target/release/libbat_c.so (Linux), libbat_c.dylib (macOS), bat_c.dll (Windows)
 ```
 
+#### Note for macOS users
+
+The library is built with `rpath = true`, so the `.dylib` uses `@rpath` for loading. If you extract the release archive and use it directly from that directory, it should work without additional setup. If you install the library to a system directory (e.g., `/usr/local/lib`), ensure the directory is in your `@rpath` or set `DYLD_LIBRARY_PATH` accordingly.
+
 ### C API
 
 ```c
