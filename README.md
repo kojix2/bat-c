@@ -3,7 +3,7 @@
 [![test](https://github.com/kojix2/bat-c/actions/workflows/test.yml/badge.svg)](https://github.com/kojix2/bat-c/actions/workflows/test.yml)
 [![Lines of Code](https://img.shields.io/endpoint?url=https%3A%2F%2Ftokei.kojix2.net%2Fbadge%2Fgithub%2Fkojix2%2Fbat-c%2Flines)](https://tokei.kojix2.net/github/kojix2/bat-c)
 
-- Provides a C API for [bat](https://github.com/sharkdp/bat), enabling its use from various programming languages.
+Provides a C API for [bat](https://github.com/sharkdp/bat), enabling its use from various programming languages via FFI.
 
 ## Installation
 
@@ -18,11 +18,18 @@ cargo build --release
 # target/release/libbat_c.so (Linux), libbat_c.dylib (macOS), bat_c.dll (Windows)
 ```
 
-#### Note for macOS users
-
+**Note for macOS users:**  
 The library is built with `rpath = true`, so the `.dylib` uses `@rpath` for loading. If you extract the release archive and use it directly from that directory, it should work without additional setup. If you install the library to a system directory (e.g., `/usr/local/lib`), ensure the directory is in your `@rpath` or set `DYLD_LIBRARY_PATH` accordingly.
 
-### C API
+## API Reference
+
+See [`bat.h`](bat.h) for detailed documentation including:
+- Parameter requirements for each `BatInputType`
+- Valid values for `wrapping_mode` (0=NoWrapping, 1=Character) and `paging_mode` (0=Never, 1=Always, 2=QuitIfOneScreen)
+- Memory safety requirements and proper usage of `bat_free_string`
+- Error handling (functions return 0 on success, 1 on error; error details are printed to stderr)
+
+### C API Overview
 
 ```c
 /**
@@ -88,7 +95,7 @@ void bat_free_string(const char *s);
 const char *bat_c_version(void);
 ```
 
-Example:
+### Usage Example
 
 ```c
 #include <stdio.h>
