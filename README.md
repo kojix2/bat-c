@@ -5,6 +5,8 @@
 
 Provides a C API for [bat](https://github.com/sharkdp/bat), enabling its use from various programming languages via FFI.
 
+![screenshot](screenshot.png)
+
 ## Installation
 
 Download binaries from [GitHub Releases](https://github.com/kojix2/bat-c/releases).
