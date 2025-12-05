@@ -45,7 +45,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: latest
+          go-version: stable
       - name: Build Rust library
         run: cargo build --release
       - name: Build and run Go examples
