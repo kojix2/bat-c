@@ -3,13 +3,6 @@ import os
 const rootPath = currentSourcePath.parentDir.parentDir.parentDir
 const libPath = rootPath / "target" / "release"
 
-when defined(macosx):
-  const libName = libPath / "libbat_c.dylib"
-elif defined(windows):
-  const libName = libPath / "bat_c.dll"
-else:
-  const libName = libPath / "libbat_c.so"
-
 {.passL: "-L" & libPath & " -lbat_c".}
 when defined(macosx):
   {.passL: "-Wl,-rpath," & libPath.}
@@ -60,7 +53,7 @@ proc main() =
     stderr.writeLine("error")
     quit(1)
 
-  stdout.write(output.substr(0, int(output_len) - 1))
+  stdout.write($output)
   bat_free_string(output)
 
 main()
