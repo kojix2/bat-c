@@ -1,8 +1,6 @@
 const std = @import("std");
 const c = @cImport({
     @cInclude("bat.h");
-    @cInclude("stdio.h");
-    @cInclude("string.h");
 });
 
 pub fn main() void {
@@ -39,10 +37,10 @@ pub fn main() void {
     );
 
     if (ret != 0) {
-        _ = c.fprintf(c.stderr(), "error\n");
-        c.exit(1);
+        std.debug.print("error\n", .{});
+        std.posix.exit(1);
     }
 
-    _ = c.fwrite(out, 1, out_len, c.stdout());
+    _ = std.posix.write(std.posix.STDOUT_FILENO, out[0..out_len]) catch {};
     c.bat_free_string(out);
 }
