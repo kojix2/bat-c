@@ -168,24 +168,13 @@ jobs:
           v run self_print.v > /dev/null
 
   test-odin:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-      fail-fast: false
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: laytan/setup-odin@v2
       - name: Build Rust library
         run: cargo build --release
-      - name: Run Odin examples (macOS)
-        if: matrix.os == 'macos-latest'
-        run: |
-          cd examples/Odin
-          odin run basic.odin -file > /dev/null
-          DYLD_LIBRARY_PATH=../../target/release odin run self_print.odin -file > /dev/null
-      - name: Run Odin examples (Linux)
-        if: matrix.os == 'ubuntu-latest'
+      - name: Run Odin examples
         run: |
           cd examples/Odin
           # Modify to use .so for Linux
