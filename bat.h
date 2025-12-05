@@ -6,6 +6,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * BatInputType enum to specify the type of input
  *
@@ -129,3 +133,7 @@ void bat_free_string(const char *s);
  * Return the version of the library
  */
 const char *bat_c_version(void);
+
+#ifdef __cplusplus
+}
+#endif
