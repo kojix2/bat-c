@@ -1,12 +1,10 @@
 module main
 
-import os
-
-#flag -I @VMODROOT/../..
-#flag -L @VMODROOT/../../target/release
+#flag -I ../../
+#flag -L ../../target/release
 #flag -lbat_c
-#flag darwin -Wl,-rpath,@VMODROOT/../../target/release
-#flag linux -Wl,-rpath=@VMODROOT/../../target/release
+#flag darwin -Wl,-rpath,../../target/release
+#flag linux -Wl,-rpath=../../target/release
 #include "bat.h"
 
 struct C.BatPrintOptions {
@@ -47,7 +45,7 @@ fn main() {
 		highlight_line: 0
 	}
 
-	mut output := &char(0)
+	mut output := unsafe { nil }
 	mut output_len := usize(0)
 
 	ret := C.bat_pretty_print_to_string(file_path.str, 0, 1, c'v', c'Nord', opt,
