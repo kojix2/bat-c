@@ -1,0 +1,237 @@
+name: examples
+on: [push, pull_request]
+
+jobs:
+  test-c:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Rust library
+        run: cargo build --release
+      - name: Build and run C examples
+        run: |
+          cd examples/C
+          make
+          make run-basic > /dev/null
+          make run-self_print > /dev/null
+
+  test-python:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.9", "3.12"]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Build Rust library
+        run: cargo build --release
+      - name: Run Python examples
+        run: |
+          python3 examples/Python/basic.py > /dev/null
+          python3 examples/Python/self_print.py > /dev/null
+
+  test-go:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        go-version: ["1.21", "1.22"]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: Build Rust library
+        run: cargo build --release
+      - name: Build and run Go examples
+        run: |
+          cd examples/Go
+          make
+          make run-basic > /dev/null
+          make run-self_print > /dev/null
+
+  test-ruby:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        ruby-version: ["3.1", "3.3"]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+      - name: Install FFI gem
+        run: gem install ffi
+      - name: Build Rust library
+        run: cargo build --release
+      - name: Run Ruby examples
+        run: |
+          ruby examples/Ruby/basic.rb > /dev/null
+          ruby examples/Ruby/self_print.rb > /dev/null
+
+  test-julia:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        julia-version: ["1.9", "1.10"]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: ${{ matrix.julia-version }}
+      - name: Build Rust library
+        run: cargo build --release
+      - name: Run Julia examples
+        run: |
+          julia examples/Julia/basic.jl > /dev/null
+          julia examples/Julia/self_print.jl > /dev/null
+
+  test-d:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dlang-community/setup-dlang@v1
+        with:
+          compiler: dmd-latest
+      - name: Build Rust library
+        run: cargo build --release
+      - name: Build and run D examples
+        run: |
+          cd examples/D
+          make
+          make run-basic > /dev/null
+          make run-self_print > /dev/null
+
+  test-zig:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: goto-bus-stop/setup-zig@v2
+        with:
+          version: 0.13.0
+      - name: Build Rust library
+        run: cargo build --release
+      - name: Build Zig examples
+        run: |
+          cd examples/Zig
+          zig build
+      - name: Run Zig examples (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          cd examples/Zig
+          DYLD_LIBRARY_PATH=../../target/release ./zig-out/bin/basic > /dev/null
+          DYLD_LIBRARY_PATH=../../target/release ./zig-out/bin/self_print > /dev/null
+      - name: Run Zig examples (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          cd examples/Zig
+          LD_LIBRARY_PATH=../../target/release ./zig-out/bin/basic > /dev/null
+          LD_LIBRARY_PATH=../../target/release ./zig-out/bin/self_print > /dev/null
+
+  test-nim:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jiro4989/setup-nim-action@v2
+        with:
+          nim-version: "2.x"
+      - name: Build Rust library
+        run: cargo build --release
+      - name: Build and run Nim examples
+        run: |
+          cd examples/Nim
+          nim c -r basic.nim > /dev/null
+          nim c -r self_print.nim > /dev/null
+
+  test-v:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: vlang/setup-v@v1.4
+        with:
+          check-latest: true
+      - name: Build Rust library
+        run: cargo build --release
+      - name: Run V examples
+        run: |
+          cd examples/V
+          v run basic.v > /dev/null
+          v run self_print.v > /dev/null
+
+  test-odin:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: laytan/setup-odin@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Rust library
+        run: cargo build --release
+      - name: Run Odin examples (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          cd examples/Odin
+          odin run basic.odin -file > /dev/null
+          DYLD_LIBRARY_PATH=../../target/release odin run self_print.odin -file > /dev/null
+      - name: Run Odin examples (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          cd examples/Odin
+          # Modify to use .so for Linux
+          sed -i 's/libbat_c.dylib/libbat_c.so/g' basic.odin self_print.odin
+          odin run basic.odin -file > /dev/null
+          LD_LIBRARY_PATH=../../target/release odin run self_print.odin -file > /dev/null
+
+  test-typescript:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node-version: ["18", "20"]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Build Rust library
+        run: cargo build --release
+      - name: Build and run TypeScript examples
+        run: |
+          cd examples/TypeScript
+          npm install
+          node basic.js > /dev/null
+          node self_print.js > /dev/null

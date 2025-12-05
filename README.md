@@ -158,6 +158,32 @@ int main()
 }
 ```
 
+## Multi-Language Examples
+
+Examples demonstrating how to use bat-c from various programming languages via FFI:
+
+- **[C](examples/C/)** - Direct usage with Makefile
+- **[Python](examples/Python/)** - Using ctypes
+- **[Go](examples/Go/)** - Using cgo with dynamic/static linking
+- **[Ruby](examples/Ruby/)** - Using ffi gem
+- **[Julia](examples/Julia/)** - Using ccall
+- **[D](examples/D/)** - Using extern(C) with dmd/ldc2
+- **[Zig](examples/Zig/)** - Using @cImport with build.zig
+- **[Nim](examples/Nim/)** - Using importc pragma
+- **[V](examples/V/)** - Using V's C interop
+- **[Odin](examples/Odin/)** - Using foreign import
+- **[TypeScript/Node.js](examples/TypeScript/)** - Using Node-API (N-API)
+
+Each example directory contains:
+- `basic` - Simple example highlighting HTML code
+- `self_print` - Example that syntax-highlights its own source file
+- `README.md` - Build and run instructions specific to that language
+
+All examples require building the Rust library first:
+```sh
+cargo build --release
+```
+
 ## Development
 
 ### Running Tests

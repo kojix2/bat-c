@@ -1,0 +1,13 @@
+{
+  "name": "bat-c-typescript-examples",
+  "version": "0.0.1",
+  "description": "TypeScript examples for bat-c using Node-API",
+  "main": "index.js",
+  "scripts": {
+    "install": "node-gyp rebuild",
+    "test": "node basic.js && node self_print.js"
+  },
+  "devDependencies": {
+    "node-gyp": "^10.0.0"
+  }
+}
