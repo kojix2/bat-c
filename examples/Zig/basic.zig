@@ -1,23 +1,25 @@
 const std = @import("std");
 const c = @cImport({
     @cInclude("bat.h");
+    @cInclude("stdio.h");
+    @cInclude("string.h");
 });
 
-pub fn main() !void {
+pub fn main() void {
     const text = "<span>Hello</span>\n";
 
     const opt = c.BatPrintOptions{
         .tab_width = 4,
-        .colored_output = 1,
-        .true_color = 1,
-        .header = 0,
-        .line_numbers = 0,
-        .grid = 0,
-        .rule = 0,
-        .show_nonprintable = 0,
-        .snip = 1,
+        .colored_output = true,
+        .true_color = true,
+        .header = false,
+        .line_numbers = false,
+        .grid = false,
+        .rule = false,
+        .show_nonprintable = false,
+        .snip = true,
         .wrapping_mode = 1,
-        .use_italics = 1,
+        .use_italics = true,
         .paging_mode = 0,
         .highlight_line = 0,
     };
@@ -37,12 +39,10 @@ pub fn main() !void {
     );
 
     if (ret != 0) {
-        const stderr = std.io.getStdErr().writer();
-        try stderr.writeAll("error\n");
-        std.process.exit(1);
+        _ = c.fprintf(c.stderr(), "error\n");
+        c.exit(1);
     }
 
-    const stdout = std.io.getStdOut().writer();
-    try stdout.writeAll(out[0..out_len]);
+    _ = c.fwrite(out, 1, out_len, c.stdout());
     c.bat_free_string(out);
 }
