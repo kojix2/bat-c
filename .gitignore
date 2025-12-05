@@ -2,6 +2,8 @@
 *.lock
 /test/test_pretty_print
 
+examples/*/build/
+examples/*/node_modules/
 examples/*/zig-out/
 examples/*/.*
 examples/*/basic
