@@ -9,7 +9,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - name: Build Rust library
         run: cargo build --release
       - name: Build and run C examples
@@ -26,7 +26,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: actions/setup-python@v5
       - name: Build Rust library
         run: cargo build --release
@@ -42,7 +42,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: actions/setup-go@v5
         with:
           go-version: stable
@@ -62,7 +62,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ruby
@@ -82,7 +82,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: julia-actions/setup-julia@v2
       - name: Build Rust library
         run: cargo build --release
@@ -94,7 +94,7 @@ jobs:
   test-d:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: dlang-community/setup-dlang@v1
       - name: Build Rust library
         run: cargo build --release
@@ -112,7 +112,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: goto-bus-stop/setup-zig@v2
       - name: Build Rust library
         run: cargo build --release
@@ -140,7 +140,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: jiro4989/setup-nim-action@v2
       - name: Build Rust library
         run: cargo build --release
@@ -157,7 +157,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: vlang/setup-v@v1.4
       - name: Build Rust library
         run: cargo build --release
@@ -174,7 +174,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: actions/setup-node@v4
       - name: Build Rust library
         run: cargo build --release
