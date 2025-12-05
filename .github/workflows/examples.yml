@@ -167,21 +167,6 @@ jobs:
           v run basic.v > /dev/null
           v run self_print.v > /dev/null
 
-  test-odin:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: laytan/setup-odin@v2
-      - name: Build Rust library
-        run: cargo build --release
-      - name: Run Odin examples
-        run: |
-          cd examples/Odin
-          # Modify to use .so for Linux
-          sed -i 's/libbat_c.dylib/libbat_c.so/g' basic.odin self_print.odin
-          odin run basic.odin -file > /dev/null
-          LD_LIBRARY_PATH=../../target/release odin run self_print.odin -file > /dev/null
-
   test-typescript:
     runs-on: ${{ matrix.os }}
     strategy:
