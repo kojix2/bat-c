@@ -27,8 +27,10 @@ int main(void)
                                    BatBytes, "html", "Nord",
                                    opt, &out, &len) != 0)
     {
+        fprintf(stderr, "error\n");
         return 1;
     }
     fwrite(out, 1, len, stdout);
     bat_free_string(out);
+    return 0;
 }
