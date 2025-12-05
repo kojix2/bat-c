@@ -4,7 +4,7 @@ package main
 #cgo CFLAGS: -I../..
 #cgo LDFLAGS: -L../../target/release -lbat_c
 #include "bat.h"
-#include <stdlib.h>
+#include <string.h>
 */
 import "C"
 import (
@@ -15,8 +15,6 @@ import (
 
 func main() {
 	text := "<span>Hello</span>\n"
-	cText := C.CString(text)
-	defer C.free(unsafe.Pointer(cText))
 
 	opt := C.BatPrintOptions{
 		tab_width:         4,
@@ -37,17 +35,12 @@ func main() {
 	var out *C.char
 	var outLen C.size_t
 
-	lang := C.CString("html")
-	defer C.free(unsafe.Pointer(lang))
-	theme := C.CString("Nord")
-	defer C.free(unsafe.Pointer(theme))
-
 	ret := C.bat_pretty_print_to_string(
-		unsafe.Pointer(cText),
+		C.CString(text),
 		C.size_t(len(text)),
-		C.int(0), // BatBytes
-		lang,
-		theme,
+		0, // BatBytes
+		C.CString("html"),
+		C.CString("Nord"),
 		opt,
 		&out,
 		&outLen,

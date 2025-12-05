@@ -4,7 +4,7 @@ package main
 #cgo CFLAGS: -I../..
 #cgo LDFLAGS: -L../../target/release -lbat_c
 #include "bat.h"
-#include <stdlib.h>
+#include <string.h>
 */
 import "C"
 import (
@@ -14,8 +14,7 @@ import (
 )
 
 func main() {
-	filePath := C.CString("self_print.go")
-	defer C.free(unsafe.Pointer(filePath))
+	filePath := "self_print.go"
 
 	opt := C.BatPrintOptions{
 		tab_width:         4,
@@ -36,17 +35,12 @@ func main() {
 	var out *C.char
 	var outLen C.size_t
 
-	lang := C.CString("go")
-	defer C.free(unsafe.Pointer(lang))
-	theme := C.CString("Nord")
-	defer C.free(unsafe.Pointer(theme))
-
 	ret := C.bat_pretty_print_to_string(
-		unsafe.Pointer(filePath),
+		C.CString(filePath),
 		0,
-		C.int(1), // BatFile
-		lang,
-		theme,
+		1, // BatFile
+		C.CString("go"),
+		C.CString("Nord"),
 		opt,
 		&out,
 		&outLen,
