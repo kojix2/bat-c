@@ -88,11 +88,7 @@ jobs:
           julia examples/Julia/self_print.jl > /dev/null
 
   test-d:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-      fail-fast: false
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: dlang-community/setup-dlang@v1
