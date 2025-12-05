@@ -26,7 +26,7 @@ napi_value Basic(napi_env env, napi_callback_info info)
     size_t len = 0;
 
     int ret = bat_pretty_print_to_string(
-        text, strlen(text), 0, "html", "Nord", opt, &out, &len);
+        text, strlen(text), (BatInputType)0, "html", "Nord", opt, &out, &len);
 
     napi_value result;
     if (ret != 0)

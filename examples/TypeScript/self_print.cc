@@ -25,7 +25,7 @@ napi_value SelfPrint(napi_env env, napi_callback_info info)
     size_t len = 0;
 
     int ret = bat_pretty_print_to_string(
-        file, 0, 1, "cpp", "Nord", opt, &out, &len);
+        file, 0, (BatInputType)1, "cpp", "Nord", opt, &out, &len);
 
     napi_value result;
     if (ret != 0)
