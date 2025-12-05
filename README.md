@@ -171,7 +171,6 @@ Examples demonstrating how to use bat-c from various programming languages via F
 - **[Zig](examples/Zig/)** - Using @cImport with build.zig
 - **[Nim](examples/Nim/)** - Using importc pragma
 - **[V](examples/V/)** - Using V's C interop
-- **[Odin](examples/Odin/)** - Using foreign import
 - **[TypeScript/Node.js](examples/TypeScript/)** - Using Node-API (N-API)
 
 Each example directory contains:
