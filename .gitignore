@@ -5,5 +5,5 @@
 zig-cache/
 examples/*/zig-out/
 
-basic
-self-print
+examples/*/basic
+examples/*/self_print
