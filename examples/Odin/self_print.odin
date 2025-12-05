@@ -3,6 +3,7 @@ package main
 import "core:c"
 import "core:fmt"
 import "core:os"
+import "core:runtime"
 import "core:strings"
 
 foreign import bat "../../target/release/libbat_c.dylib"
