@@ -1,9 +1,8 @@
 /target
 *.lock
 /test/test_pretty_print
-.zig-cache/
-zig-cache/
-examples/*/zig-out/
 
+examples/*/zig-out/
+examples/*/.*
 examples/*/basic
 examples/*/self_print
