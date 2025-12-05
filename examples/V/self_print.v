@@ -45,11 +45,11 @@ fn main() {
 		highlight_line: 0
 	}
 
-	mut output := unsafe { nil }
+	mut output := &char(unsafe { nil })
 	mut output_len := usize(0)
 
 	ret := C.bat_pretty_print_to_string(file_path.str, 0, 1, c'v', c'Nord', opt,
-&output, &output_len)
+		&output, &output_len)
 
 	if ret != 0 {
 		eprintln('error')
