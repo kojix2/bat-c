@@ -24,13 +24,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python-version: ["3.9", "3.12"]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
       - name: Build Rust library
         run: cargo build --release
       - name: Run Python examples
@@ -43,13 +40,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        go-version: ["1.21", "1.22"]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
-        with:
-          go-version: ${{ matrix.go-version }}
       - name: Build Rust library
         run: cargo build --release
       - name: Build and run Go examples
@@ -64,13 +58,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        ruby-version: ["3.1", "3.3"]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ matrix.ruby-version }}
       - name: Install FFI gem
         run: gem install ffi
       - name: Build Rust library
@@ -85,13 +76,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        julia-version: ["1.9", "1.10"]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v2
-        with:
-          version: ${{ matrix.julia-version }}
       - name: Build Rust library
         run: cargo build --release
       - name: Run Julia examples
@@ -108,8 +96,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dlang-community/setup-dlang@v1
-        with:
-          compiler: dmd-latest
       - name: Build Rust library
         run: cargo build --release
       - name: Build and run D examples
@@ -128,8 +114,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: goto-bus-stop/setup-zig@v2
-        with:
-          version: 0.13.0
       - name: Build Rust library
         run: cargo build --release
       - name: Build Zig examples
@@ -158,8 +142,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: jiro4989/setup-nim-action@v2
-        with:
-          nim-version: "2.x"
       - name: Build Rust library
         run: cargo build --release
       - name: Build and run Nim examples
@@ -177,8 +159,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: vlang/setup-v@v1.4
-        with:
-          check-latest: true
       - name: Build Rust library
         run: cargo build --release
       - name: Run V examples
@@ -196,8 +176,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: laytan/setup-odin@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Rust library
         run: cargo build --release
       - name: Run Odin examples (macOS)
@@ -220,13 +198,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        node-version: ["18", "20"]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
       - name: Build Rust library
         run: cargo build --release
       - name: Build and run TypeScript examples
