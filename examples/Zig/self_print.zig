@@ -38,9 +38,9 @@ pub fn main() void {
 
     if (ret != 0) {
         std.debug.print("error\n", .{});
-        std.posix.exit(1);
+        std.process.exit(1);
     }
 
-    _ = std.posix.write(std.posix.STDOUT_FILENO, out[0..out_len]) catch {};
+    _ = std.c.write(1, out, out_len);
     c.bat_free_string(out);
 }

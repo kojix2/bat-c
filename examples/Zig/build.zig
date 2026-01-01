@@ -7,29 +7,31 @@ pub fn build(b: *std.Build) void {
     const basic_module = b.createModule(.{
         .root_source_file = b.path("basic.zig"),
         .target = target,
+        .link_libc = true,
     });
+    basic_module.addIncludePath(b.path("../.."));
+    basic_module.addLibraryPath(b.path("../../target/release"));
+    basic_module.linkSystemLibrary("bat_c", .{});
+    
     const exe = b.addExecutable(.{
         .name = "basic",
         .root_module = basic_module,
     });
-    exe.addIncludePath(b.path("../.."));
-    exe.addLibraryPath(b.path("../../target/release"));
-    exe.linkSystemLibrary("bat_c");
-    exe.linkLibC();
     b.installArtifact(exe);
 
     // Self_print example
     const self_print_module = b.createModule(.{
         .root_source_file = b.path("self_print.zig"),
         .target = target,
+        .link_libc = true,
     });
+    self_print_module.addIncludePath(b.path("../.."));
+    self_print_module.addLibraryPath(b.path("../../target/release"));
+    self_print_module.linkSystemLibrary("bat_c", .{});
+    
     const exe2 = b.addExecutable(.{
         .name = "self_print",
         .root_module = self_print_module,
     });
-    exe2.addIncludePath(b.path("../.."));
-    exe2.addLibraryPath(b.path("../../target/release"));
-    exe2.linkSystemLibrary("bat_c");
-    exe2.linkLibC();
     b.installArtifact(exe2);
 }
