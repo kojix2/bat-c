@@ -8,7 +8,7 @@ jobs:
         os: ["ubuntu", "macos", "windows"]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
         with:
           submodules: true
       - run: git submodule update --init
@@ -17,7 +17,7 @@ jobs:
 
       - name: Make cl.exe available on Windows
         if: matrix.os == 'windows'
-        uses: ilammy/msvc-dev-cmd@v1
+        uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1
 
       - name: Run test script on Linux and macOS
         if: matrix.os != 'windows'
