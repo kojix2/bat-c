@@ -15,7 +15,7 @@ module BatC
   end
 
   class BatPrintOptions < FFI::Struct
-    layout :tab_width, :uint32,
+    layout :tab_width, :size_t,
            :colored_output, :uint8,
            :true_color, :uint8,
            :header, :uint8,

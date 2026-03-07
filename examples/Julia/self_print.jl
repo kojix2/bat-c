@@ -12,7 +12,7 @@ end
 
 # BatPrintOptions struct
 struct BatPrintOptions
-    tab_width::UInt32
+    tab_width::Csize_t
     colored_output::UInt8
     true_color::UInt8
     header::UInt8

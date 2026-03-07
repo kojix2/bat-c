@@ -9,7 +9,7 @@ extern(C) {
     }
     
     struct BatPrintOptions {
-        uint tab_width;
+        size_t tab_width;
         ubyte colored_output;
         ubyte true_color;
         ubyte header;

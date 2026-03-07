@@ -68,7 +68,7 @@ typedef struct BatPrintOptions {
  */
 int32_t bat_pretty_print(const char *input,
                          size_t length,
-                         enum BatInputType input_type,
+                         int32_t input_type,
                          const char *language,
                          const char *theme,
                          struct BatPrintOptions options);
@@ -79,7 +79,7 @@ int32_t bat_pretty_print(const char *input,
  */
 int32_t bat_pretty_print_to_string(const char *input,
                                    size_t length,
-                                   enum BatInputType input_type,
+                                   int32_t input_type,
                                    const char *language,
                                    const char *theme,
                                    struct BatPrintOptions options,

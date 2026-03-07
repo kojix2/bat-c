@@ -62,23 +62,24 @@ typedef struct BatPrintOptions {
  * Parameters:
  *   input: Depends on input_type (see BatInputType documentation)
  *   length: Depends on input_type (see BatInputType documentation)
- *   input_type: Type of input (BatBytes, BatFile, or BatFiles)
+ *   input_type: Type of input (0=BatBytes, 1=BatFile, 2=BatFiles)
  *   language: Syntax highlighting language (can be NULL for auto-detection)
  *   theme: Color theme name (can be NULL for default theme)
  *   options: Print options
  *
  * Safety:
  *   - For BatBytes: caller must ensure input points to valid memory of at least length bytes
- *   - For BatFile: caller must ensure input is a valid null-terminated string
+ *   - For BatFile: caller must ensure input is a valid null-terminated UTF-8 string
  *   - For BatFiles: caller must ensure input points to an array of length valid const char* pointers,
- *     each pointing to a valid null-terminated string
+ *     each pointing to a non-NULL valid null-terminated UTF-8 string
  *   - language and theme must be valid UTF-8 if not NULL
+ *   - Invalid input_type values return an error
  *
  * Returns: 0 on success, 1 on error. Error details are printed to stderr.
  */
 int32_t bat_pretty_print(const char *input,
                          size_t length,
-                         enum BatInputType input_type,
+                         int32_t input_type,
                          const char *language,
                          const char *theme,
                          struct BatPrintOptions options);
@@ -89,7 +90,7 @@ int32_t bat_pretty_print(const char *input,
  * Parameters:
  *   input: Depends on input_type (see BatInputType documentation)
  *   length: Depends on input_type (see BatInputType documentation)
- *   input_type: Type of input (BatBytes, BatFile, or BatFiles)
+ *   input_type: Type of input (0=BatBytes, 1=BatFile, 2=BatFiles)
  *   language: Syntax highlighting language (can be NULL for auto-detection)
  *   theme: Color theme name (can be NULL for default theme)
  *   options: Print options
@@ -101,14 +102,15 @@ int32_t bat_pretty_print(const char *input,
  *   - The returned string in *output is allocated by the library and MUST be freed
  *     by calling bat_free_string() exactly once
  *   - Do not free the returned string with free() or other memory management functions
- *   - output and output_length must be valid pointers
+ *   - output and output_length must be non-NULL valid pointers
+ *   - Invalid input_type values return an error
  *
  * Returns: 0 on success, 1 on error. Error details are printed to stderr.
  *          On error, *output will not be modified.
  */
 int32_t bat_pretty_print_to_string(const char *input,
                                    size_t length,
-                                   enum BatInputType input_type,
+                                   int32_t input_type,
                                    const char *language,
                                    const char *theme,
                                    struct BatPrintOptions options,

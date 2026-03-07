@@ -8,7 +8,7 @@ module main
 #include "bat.h"
 
 struct C.BatPrintOptions {
-	tab_width          u32
+	tab_width          usize
 	colored_output     u8
 	true_color         u8
 	header             u8

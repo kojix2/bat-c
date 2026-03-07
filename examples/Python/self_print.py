@@ -15,7 +15,7 @@ else:
 # Define BatPrintOptions struct
 class BatPrintOptions(ctypes.Structure):
     _fields_ = [
-        ("tab_width", ctypes.c_uint32),
+        ("tab_width", ctypes.c_size_t),
         ("colored_output", ctypes.c_uint8),
         ("true_color", ctypes.c_uint8),
         ("header", ctypes.c_uint8),

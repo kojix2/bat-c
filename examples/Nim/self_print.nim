@@ -11,7 +11,7 @@ else:
 
 type
   BatPrintOptions {.importc, header: rootPath / "bat.h".} = object
-    tab_width: uint32
+    tab_width: csize_t
     colored_output: uint8
     true_color: uint8
     header: uint8
