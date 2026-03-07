@@ -183,6 +183,10 @@ All examples require building the Rust library first:
 cargo build --release
 ```
 
+## Wombat
+
+[Wombat](https://github.com/kojix2/wombat) - [Crystal](https://github.com/crystal-lang/crystal) bindings
+
 ## Development
 
 ### Running Tests
