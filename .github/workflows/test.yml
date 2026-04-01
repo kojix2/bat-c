@@ -54,7 +54,7 @@ jobs:
           )
           Compress-Archive -Path $paths -DestinationPath $output
 
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
           name: ${{ matrix.os }}-test
           path: |
