@@ -167,6 +167,25 @@ jobs:
           v run basic.v > /dev/null
           v run self_print.v > /dev/null
 
+  test-odin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - name: Install Odin
+        run: |
+          curl -L -o odin.tar.gz https://github.com/odin-lang/Odin/releases/download/dev-2026-07a/odin-linux-amd64-dev-2026-07a.tar.gz
+          mkdir -p "$RUNNER_TEMP/odin"
+          tar -xzf odin.tar.gz -C "$RUNNER_TEMP/odin" --strip-components=1
+          echo "$RUNNER_TEMP/odin" >> "$GITHUB_PATH"
+      - name: Build Rust library
+        run: cargo build --release
+      - name: Build and run Odin examples
+        run: |
+          cd examples/Odin
+          make
+          make run-basic > /dev/null
+          make run-self_print > /dev/null
+
   test-typescript:
     runs-on: ${{ matrix.os }}
     strategy:
