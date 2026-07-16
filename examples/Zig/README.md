@@ -32,4 +32,4 @@ zig build
 ./zig-out/bin/self_print
 ```
 
-Notes: Uses Zig's `@cImport` to import `bat.h` and call C functions. The `build.zig` file configures include paths and library linking. For static builds, ensure `libbat_c.a` is available in `target/release`.
+Notes: Uses Zig `extern` declarations in `bat_c.zig` to call C functions from `bat.h`. The `build.zig` file configures include paths and library linking. For static builds, ensure `libbat_c.a` is available in `target/release`.

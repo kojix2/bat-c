@@ -1,12 +1,10 @@
 const std = @import("std");
-const c = @cImport({
-    @cInclude("bat.h");
-});
+const bat = @import("bat_c.zig");
 
-pub fn main() void {
+pub fn main() !void {
     const text = "<span>Hello</span>\n";
 
-    const opt = c.BatPrintOptions{
+    const opt = bat.BatPrintOptions{
         .tab_width = 4,
         .colored_output = true,
         .true_color = true,
@@ -25,15 +23,15 @@ pub fn main() void {
     var out: [*c]const u8 = null;
     var out_len: usize = 0;
 
-    const ret = c.bat_pretty_print_to_string(
+    const ret = bat.bat_pretty_print_to_string(
         text.ptr,
         text.len,
-        0, // BatBytes
+        bat.BatBytes,
         "html",
         "Nord",
         opt,
-        @ptrCast(&out),
-        @ptrCast(&out_len),
+        &out,
+        &out_len,
     );
 
     if (ret != 0) {
@@ -41,6 +39,6 @@ pub fn main() void {
         std.process.exit(1);
     }
 
-    _ = std.c.write(1, out, out_len);
-    c.bat_free_string(out);
+    try bat.writeStdout(out[0..out_len]);
+    bat.bat_free_string(out);
 }
