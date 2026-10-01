@@ -158,7 +158,7 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      - uses: vlang/setup-v@51668e85beab02cce1907b99b6ad039e71d98994 # v1.4
+      - uses: vlang/setup-v@663cc08827d1fc0532ee755b4dedbb183c11d06a # v1.7
       - name: Build Rust library
         run: cargo build --release
       - name: Run V examples
